@@ -3,18 +3,30 @@ require 'json'
 
 class CoordsController < ApplicationController
   def fetch_weather
-    @latitude = 42.0538387
-    @longitude = -87.67721
+    @address = "San Diego, CA"
+    addy = params[:name]
+    @address = "#{addy}"
+    @url_safe_address = URI.encode(@address)
     @your_api_key = "46841f6d070b50ef7d2d0e0e1e35f677"
 
-    # Your code goes here.
-    url = "https://api.forecast.io/forecast/#{@your_api_key}/#{@latitude},#{@longitude}"
+    url = "https://maps.googleapis.com/maps/api/geocode/json?address=#{@url_safe_address}&sensor=false"
     raw_data = open(url).read
     parsed_data = JSON.parse(raw_data)
-    current=parsed_data["currently"]
-    minute=parsed_data["minutely"]
-    hour=parsed_data["hourly"]
-    daily=parsed_data["daily"]
+    results = parsed_data["results"]
+    first = results[0]
+    geometry = first["geometry"]
+    location = geometry["location"]
+    @latitude = location["lat"]
+    @longitude = location["lng"]
+
+    # Your code goes here.
+    url2= "https://api.forecast.io/forecast/#{@your_api_key}/#{@latitude},#{@longitude}"
+    raw_data2 = open(url2).read
+    parsed_data2 = JSON.parse(raw_data2)
+    current=parsed_data2["currently"]
+    minute=parsed_data2["minutely"]
+    hour=parsed_data2["hourly"]
+    daily=parsed_data2["daily"]
     @temperature = current["temperature"]
     @minutely_summary = minute["summary"]
     @hourly_summary = hour["summary"]

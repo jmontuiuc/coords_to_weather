@@ -18,4 +18,11 @@
 
   <dt>Summary for the week:</dt>
   <dd><%= @daily_summary %></dd>
+
+  <p>
+    <%=form_tag :action => 'fetch_weather' do %>
+    <%= label_tag(:name, "Enter Address") %>
+    <%= text_field_tag (:name)%>
+    <%= submit_tag "Submit" %> </p>
+  <% end %>
 </dl>

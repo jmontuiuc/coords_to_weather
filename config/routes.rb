@@ -1,3 +1,4 @@
 CoordsToWeather::Application.routes.draw do
-  get("/weather", { :controller => "coords", :action => "fetch_weather" })
+  post("/weather", { :controller => "coords", :action => "fetch_weather", :id => "name" })
+  get("/weather", { :controller => "coords", :action => "fetch_weather", :id => "name" })
 end
